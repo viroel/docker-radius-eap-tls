@@ -1,12 +1,13 @@
 FROM alpine:3.6
 
-RUN apk add --no-cache freeradius openssl
+RUN apk add --no-cache freeradius freeradius-eap openssl
 
 ENV PRIVATE_CERT=issued/server.crt PRIVATE_KEY=private/server.key \
     CA_CERT=ca.crt DH_FILE=dh.pem
 
 COPY radiusd.conf clients.conf /etc/raddb/
 COPY eap /etc/raddb/mods-available
+COPY eap /etc/raddb/mods-enabled
 COPY site /etc/raddb/sites-available
 
 RUN rm /etc/raddb/sites-enabled/* && \
